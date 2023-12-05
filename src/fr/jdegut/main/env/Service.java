@@ -1,10 +1,12 @@
+package fr.jdegut.main.env;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Service {
 
     private final String id;
-    private final Map<String, Object> data;
+    private final Map<DataType, Object> data;
 
     public Service(String id) {
         this.id = id;
@@ -15,21 +17,20 @@ public class Service {
         return this.id;
     }
 
-    public Object getData(String key) {
+    public Object getData(DataType key) {
         return this.data.get(key);
     }
 
-    public boolean hasData(String key) {
+    public boolean hasData(DataType key) {
         return this.data.containsKey(key);
     }
 
-    public void setData(String key, Object value) {
+    public void setData(DataType key, Object value) {
         this.data.put(key, value);
     }
 
     @Override
     public String toString() {
-        return "Service " + this.id + " with data : \n" + this.data.toString();
+        return this.id;
     }
-
 }
