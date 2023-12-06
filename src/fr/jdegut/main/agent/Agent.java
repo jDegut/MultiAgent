@@ -1,11 +1,14 @@
 package fr.jdegut.main.agent;
 
+import fr.jdegut.main.env.Message;
+
+import java.time.LocalDateTime;
 import java.util.PriorityQueue;
 
 public abstract class Agent implements Runnable {
 
     private final String id;
-    private final PriorityQueue<String> messages;
+    private final PriorityQueue<Message> messages;
 
     protected Agent(String id) {
         this.id = id;
@@ -16,11 +19,11 @@ public abstract class Agent implements Runnable {
         return this.id;
     }
 
-    public void sendMessage(Agent dest, String message) {
-        dest.messages.add(message);
+    public void sendMessage(Agent dest, Object key, Object value) {
+        dest.messages.add(new Message(key, LocalDateTime.now(), value));
     }
 
-    public String readMessage() {
+    public Message readMessage() {
         return this.messages.poll();
     }
 

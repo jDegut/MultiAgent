@@ -4,6 +4,7 @@ import fr.jdegut.main.agent.Agent;
 import fr.jdegut.main.agent.Negotiator;
 import fr.jdegut.main.agent.Supplier;
 import fr.jdegut.main.env.DataType;
+import fr.jdegut.main.env.Message;
 import fr.jdegut.main.env.Service;
 
 public class Main {
@@ -22,10 +23,10 @@ public class Main {
         Agent a = new Supplier("aeroport_paris_cdg");
         Agent b = new Negotiator("travel_agency_paris");
 
-        a.sendMessage(b, "Hello " + b);
+        a.sendMessage(b, "Hi", "Hello");
         System.out.println(b.readMessage());
 
-        b.sendMessage(a, "Hello, I want to buy a plane ticket from Paris CDG to Tokyo Haneda");
+        b.sendMessage(a, "Hi", "Hello, I want to buy a plane ticket from Paris CDG to Tokyo Haneda");
         System.out.println(a.readMessage());
 
 
