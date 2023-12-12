@@ -26,7 +26,7 @@ public class Main {
         s.setData(DataType.ARRIVAL_LOCATION, "Tokyo Haneda");
         s.setData(DataType.PRICE, 900);
 
-        Agent a = new Supplier("aeroport_paris_cdg");
+        Agent a = new Supplier();
         Agent b = new Negotiator("travel_agency_paris");
 
         a.sendMessage(b, "Hi", "Hello");
@@ -38,6 +38,11 @@ public class Main {
         a.setStrategy(new StrategyJTMB());
         b.setStrategy(new StrategyGRDT());
         System.out.println((int) applyStrategy(b, a, 900));
+
+
+        Environnement env = new Environnement();
+        env.addAgent(a);
+        env.addAgent(b);
 
     }
 }

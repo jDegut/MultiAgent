@@ -2,7 +2,9 @@ package fr.jdegut.main.agent;
 
 public class Supplier extends Agent {
 
-    public Supplier(String id) {
-        super(id);
+    private static int id = 0;
+
+    public Supplier() {
+        super("Supplier-"+id++);
     }
 }
