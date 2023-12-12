@@ -6,6 +6,12 @@ import fr.jdegut.main.agent.Supplier;
 import fr.jdegut.main.env.DataType;
 import fr.jdegut.main.env.Message;
 import fr.jdegut.main.env.Service;
+import fr.jdegut.main.strategy.StrategyBoomerang;
+import fr.jdegut.main.strategy.StrategyGRDT;
+import fr.jdegut.main.strategy.StrategyJTMB;
+import fr.jdegut.main.strategy.StrategySSS;
+
+import static fr.jdegut.main.strategy.Strategy.applyStrategy;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,6 +35,9 @@ public class Main {
         b.sendMessage(a, "Hi", "Hello, I want to buy a plane ticket from Paris CDG to Tokyo Haneda");
         System.out.println(a.readMessage());
 
+        a.setStrategy(new StrategyJTMB());
+        b.setStrategy(new StrategyGRDT());
+        System.out.println((int) applyStrategy(b, a, 900));
 
     }
 }
