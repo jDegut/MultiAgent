@@ -11,7 +11,7 @@ public class StrategyBoomerang extends Strategy{
 			oldPrice = -1;
 			return price;
 		}
-		return -1;
+		return Double.NaN;
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class StrategyBoomerang extends Strategy{
 			if(newPrice < priceInit / 2) return -1;
 			return newPrice;
 		}
-		return -1;
+		return Double.NaN;
 	}
 }

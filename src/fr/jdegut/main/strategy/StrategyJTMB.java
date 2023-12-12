@@ -9,11 +9,14 @@ public class StrategyJTMB extends Strategy{
 		if(agent instanceof Supplier) {
 			return price;
 		}
-		return -1;
+		return Double.NaN;
 	}
 
 	@Override
 	public double updatePrice(Agent agent, double priceInit, double sellerPrice, double buyerPrice) {
-		return (sellerPrice+buyerPrice) / 2;
+		if(agent instanceof Supplier) {
+			return (sellerPrice + buyerPrice) / 2;
+		}
+		return Double.NaN;
 	}
 }
