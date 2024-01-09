@@ -1,5 +1,6 @@
 package fr.jdegut.main.agent;
 
+import fr.jdegut.main.env.Environnement;
 import fr.jdegut.main.env.Message;
 import fr.jdegut.main.strategy.Strategy;
 
@@ -11,7 +12,9 @@ public abstract class Agent implements Runnable {
     private final String id;
     private final PriorityQueue<Message> messages;
 
+    protected Environnement env;
     private Strategy strategy;
+    private int money;
 
     protected Agent(String id) {
         this.id = id;
@@ -36,6 +39,14 @@ public abstract class Agent implements Runnable {
         return this.messages.poll();
     }
 
+    public Environnement getEnv() {
+        return this.env;
+    }
+
+    public void setEnv(Environnement env) {
+        this.env = env;
+    }
+
     public Strategy getStrategy() {
         return this.strategy;
     }
@@ -44,9 +55,26 @@ public abstract class Agent implements Runnable {
         this.strategy = strategy;
     }
 
+    public int getMoney() {
+        return this.money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    protected void wait1Second() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         System.out.println("Agent " + id + " is running");
+
     }
 
     @Override
