@@ -23,7 +23,7 @@ public class Supplier extends Agent {
         while(true) {
             if (this.offer == null) {
                 this.offer = ServiceAccess.getRandomService();
-                super.env.addOfferToBoard(this.offer);
+                super.env.addOfferToBoard(this, this.offer);
             }
             try {
                 Thread.sleep(1000);
@@ -33,5 +33,9 @@ public class Supplier extends Agent {
 
             // TODO : Attendre un peu et regarder les réponses à l'offre proposée faites par les négociants
         }
+    }
+
+    public void setOffer(Service offer) {
+        this.offer = offer;
     }
 }

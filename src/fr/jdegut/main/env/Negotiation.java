@@ -1,48 +1,41 @@
 package fr.jdegut.main.env;
 
 import fr.jdegut.main.agent.Agent;
+import fr.jdegut.main.agent.Negotiator;
+import fr.jdegut.main.agent.Supplier;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Negotiation {
 
 	private final Service service;
 	private final LocalDateTime date;
-	private final List<Agent> agents;
-	private final LinkedList<Message> offers;
+	private final Supplier supplier;
+	private final List<Negotiator> negotiators;
+	private final Map<Negotiator, Float> offers;
 
-	public Negotiation(Service service, LocalDateTime date) {
+	public Negotiation(Supplier supplier, Service service, LocalDateTime date) {
 		this.service = service;
 		this.date = date;
-		this.agents = new ArrayList<>();
-		this.offers = new LinkedList<>();
+		this.supplier = supplier;
+		this.negotiators = new ArrayList<>();
+		this.offers = new HashMap<>();
 	}
 
 	public Service getService() {
 		return this.service;
 	}
 
-	public LocalDateTime getDate() {
-		return this.date;
-	}
-
-	public List<Agent> getAgents() {
-		return this.agents;
-	}
-
-	public void addAgent(Agent agent) {
-		this.agents.add(agent);
-	}
-
-	public LinkedList<Message> getOffers() {
+ 	public Map<Negotiator, Float> getOffers() {
 		return this.offers;
 	}
 
-	public void addOffer(Message offer) {
-		this.offers.add(offer);
+	public void addOffer(Negotiator negotiator, Float offer) {
+		this.offers.put(negotiator, offer);
 	}
 
+	public Supplier getSupplier() {
+		return this.supplier;
+	}
 }
