@@ -1,7 +1,6 @@
 package fr.jdegut.main.strategy;
 
 import fr.jdegut.main.agent.Agent;
-import fr.jdegut.main.env.Service;
 
 import java.util.Random;
 

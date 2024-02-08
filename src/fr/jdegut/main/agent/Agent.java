@@ -5,38 +5,35 @@ import fr.jdegut.main.strategy.Strategy;
 
 import java.time.LocalDateTime;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 public abstract class Agent implements Runnable {
 
-    private final String id;
-//    private final PriorityQueue<Message> messages;
-
+    private int id;
+    public String name;
     protected Environnement env;
     private Strategy strategy;
-    private int money;
+    private float money;
 
-    protected Agent(String id) {
-        this.id = id;
-//        this.messages = new PriorityQueue<>();
-    }
-
-    protected Agent(String id, Strategy strategy) {
-        this.id = id;
-//        this.messages = new PriorityQueue<>();
+    protected Agent(String name, Strategy strategy, float money) {
+        Random rand = new Random();
+        this.name = name;
+        this.id = rand.nextInt(1000000, 2000000);
         this.strategy = strategy;
+        this.money = money;
     }
 
-    public String getId() {
+    protected Agent(String name) {
+        this(name, null, generateRandomMoney());
+    }
+
+    protected Agent(String name, Strategy strategy) {
+        this(name, strategy, generateRandomMoney());
+    }
+
+    public int getId() {
         return this.id;
     }
-
-//    public void sendMessage(Agent dest, Object key, Object value) {
-//        dest.messages.add(new Message(key, LocalDateTime.now(), value));
-//    }
-//
-//    public Message readMessage() {
-//        return this.messages.poll();
-//    }
 
     public Environnement getEnv() {
         return this.env;
@@ -54,7 +51,7 @@ public abstract class Agent implements Runnable {
         this.strategy = strategy;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return this.money;
     }
 
@@ -70,15 +67,17 @@ public abstract class Agent implements Runnable {
         }
     }
 
+    private static float generateRandomMoney() {
+        return new Random().nextInt(500, 20000);
+    }
+
     @Override
     public void run() {
         System.out.println("Agent " + id + " is running");
-
     }
 
-    @Override
-    public String toString() {
-        return this.id;
+    protected void deleteItself() {
+        // Quand l'agent a fini sa tache, il est retiré de l'environnement
+        this.env.deleteAgent(this.id);
     }
-
 }

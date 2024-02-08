@@ -3,8 +3,7 @@ package fr.jdegut.main;
 import fr.jdegut.main.agent.Negotiator;
 import fr.jdegut.main.agent.Supplier;
 import fr.jdegut.main.env.Environnement;
-import fr.jdegut.main.env.Service;
-import fr.jdegut.main.env.ServiceAccess;
+import fr.jdegut.main.env.Ticket;
 
 import java.util.List;
 
@@ -43,10 +42,6 @@ public class Main {
         env.run();
 
         // Créez des offres pour les fournisseurs
-        for (Supplier supplier : suppliers) {
-            Service ticket = ServiceAccess.getRandomService();
-            supplier.setOffer(ticket);
-        }
 
         // Les négociateurs s'intéressent aux offres et initient la négociation
         for (Negotiator negotiator : negotiators) {
