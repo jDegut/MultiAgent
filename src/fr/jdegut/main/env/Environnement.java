@@ -12,17 +12,15 @@ public class Environnement {
 
 	public static LocalDateTime startDate;
 	private final List<Agent> agents;
-	private final List<Supplier> suppliers;
+	public final List<Supplier> suppliers;
 	private final List<Negotiator> negotiators;
-	private final List<Buyer> buyers;
-	private final List<Negotiation> board;
+	public final List<Buyer> buyers;
 
 	public Environnement() {
 		this.agents = new ArrayList<>();
 		this.suppliers = new ArrayList<>();
 		this.negotiators = new ArrayList<>();
 		this.buyers = new ArrayList<>();
-		this.board = new ArrayList<>();
 	}
 
 
@@ -60,19 +58,6 @@ public class Environnement {
 		generateRandomNegotiator(negotiators);
 	}
 
-	// Crée un board à partir des tickets de tous les suppliers
-	public void generateRandomBoard() {
-		for (Supplier s : this.suppliers) {
-			this.board.add(new Negotiation(s, s.offer));
-		}
-	}
-
-	// Crée un environnement à partir des agents et du board
-	public void generateRandomEnv(int buyers, int suppliers, int negotiators) {
-		generateRandomAgents(buyers, suppliers, negotiators);
-		generateRandomBoard();
-	}
-
 	public void run() {
 
 		startDate = LocalDateTime.now();
@@ -96,15 +81,8 @@ public class Environnement {
 		}
 	}
 
-	public void addOfferToBoard(Supplier supplier, Ticket offer) {
-		Negotiation negotiation = new Negotiation(supplier, offer, LocalDateTime.now());
-		this.board.add(negotiation);
-	}
 
-	public List<Negotiation> getBoard() {
-		return this.board;
-	}
-
+	// Retrouver respectivement negotiator, supplier et buyer à partir de leurs ID
 	public Negotiator getNegoByID(int id) {
 		for (Negotiator n : this.negotiators) {
 			if (n.getId() == id) {
@@ -112,6 +90,24 @@ public class Environnement {
 			}
 		}
 		throw new NoSuchElementException("No Negotiator found with ID: " + id);
+	}
+
+	public Supplier getSuppByID(int id) {
+		for (Supplier s : this.suppliers) {
+			if (s.getId() == id) {
+				return s;
+			}
+		}
+		throw new NoSuchElementException("No Supplier found with ID: " + id);
+	}
+
+	public Buyer getBuyerByID(int id) {
+		for (Buyer b : this.buyers) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		throw new NoSuchElementException("No Buyer found with ID: " + id);
 	}
 
 	public static String generateRandomName() {

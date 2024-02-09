@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class Ticket {
-    private final int id;
+    public final int id;
     public int agentID;
     public String departure;
     public String arrival;
@@ -22,7 +22,7 @@ public class Ticket {
     }
 
     public Ticket(String departure, String arrival, String company) {
-        this(departure, arrival, generateRandomPrice(), company);
+        this(departure, arrival, generateRandomPrice(500, 5000), company);
     }
 
     // Le ticket est attribué à un agent, au départ c'est au supplier, puis au négo
@@ -31,7 +31,7 @@ public class Ticket {
         this.agentID = id;
     }
 
-    private static float generateRandomPrice() {
-        return new Random().nextInt(500, 5000);
+    public static float generateRandomPrice(float x, float y) {
+        return new Random().nextFloat(x, y);
     }
 }

@@ -61,13 +61,13 @@ public class Supplier extends Agent {
                 Negotiator negotiator = entry.getKey();
 
                 Future<?> negotiationTask = executor.submit(() -> {
-                    Negotiation negotiation = new Negotiation();    // TODO : Modifier Negotiation pour que tout se passe bien
-                    boolean result = negotiation.negotiate(this.getId(), negotiator.getId());   // True si la négotiation entre l'instance du supplier et le negotiator
+                    int negoID = negotiator.getId();
+                    Negotiation negotiation = new Negotiation(this, this.env.getNegoByID(negoID), this.offer);
+                    boolean result = negotiation.negotiate();   // True si la négotiation entre l'instance du supplier et le negotiator
                     // a menée à un accord
 
                     if (result) {
-                        agreements.put(negotiator.getId(), negotiation.getAgreedPrice());
-                         // TODO : on récupère le prix sur lequel ils se sont mis d'accord
+                        agreements.put(negotiator, negotiation.getAgreedPrice());
                     } else {
                         negotiator.supplierAccept = -1; // Indiquer au negotiator qu'on a refusé son offre
                     }
@@ -100,6 +100,7 @@ public class Supplier extends Agent {
 
             highestBidNegotiator.supplierAccept = 1;    // Dire oui à celui choisi
             this.offer.attributeTo(highestBidNegotiator.getId());      // Ré-attribution du ticket
+            highestBidNegotiator.offer = this.offer;        // Envoi du ticket au negotiator
             this.hasBeenSold = true;                    // Le ticket a été vendu
         }
         this.deleteItself();
