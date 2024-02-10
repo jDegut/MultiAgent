@@ -4,6 +4,7 @@ import fr.jdegut.main.agent.Agent;
 import fr.jdegut.main.agent.Buyer;
 import fr.jdegut.main.agent.Negotiator;
 import fr.jdegut.main.agent.Supplier;
+import fr.jdegut.main.strategy.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -36,7 +37,7 @@ public class Environnement {
 	// Crée X suppliers aléatoires
 	public void generateRandomSuppliers(int X) {
 		for (int i = 0; i < X; i++) {
-			Supplier s = new Supplier(generateRandomName());
+			Supplier s = new Supplier(generateRandomName(), getRandomStrategy());
 			suppliers.add(s);
 			agents.add(s);
 		}
@@ -45,7 +46,7 @@ public class Environnement {
 	// Crée X négociateurs aléatoires
 	public void generateRandomNegotiator(int X) {
 		for (int i = 0; i < X; i++) {
-			Negotiator n = new Negotiator(generateRandomName());
+			Negotiator n = new Negotiator(generateRandomName(), getRandomStrategy());
 			negotiators.add(n);
 			agents.add(n);
 		}
@@ -137,6 +138,23 @@ public class Environnement {
 				iter.remove();
 				break;
 			}
+		}
+	}
+
+	public Strategy getRandomStrategy() {
+		Random random = new Random();
+		int choice = random.nextInt(4);
+		switch (choice) {
+			case 0:
+				return new StrategyBoomerang();
+			case 1:
+				return new StrategyJTMB();
+			case 2:
+				return new StrategySSS();
+			case 3:
+				return new StrategyGRDT();
+			default:
+				return null; // Erreur
 		}
 	}
 }

@@ -4,29 +4,37 @@ import fr.jdegut.main.agent.Agent;
 import fr.jdegut.main.agent.Supplier;
 
 public class StrategySSS extends Strategy {
+
+
 	@Override
-	public double getInitPrice(Agent agent, double price) {
-		if(agent instanceof Supplier) {
-			return price * 2;
+	public boolean dealAccepted(float newPrice, boolean supplier) {
+		if (supplier) {
+			return (newPrice < this.minSupplier / 1.5);
+		} else {
+			return (newPrice > this.maxNegotiator * 1.5);
 		}
-		return Double.NaN;
 	}
 
 	@Override
-	public double updatePrice(Agent agent, double priceInit, double sellerPrice, double buyerPrice) {
-		if(agent instanceof Supplier) {
-			if(buyerPrice >= priceInit) {
-				return buyerPrice;
-			} else {
-				if(buyerPrice < priceInit / 2) return -1;
-
-				double factor = random.nextDouble(5, 11);
-				sellerPrice -= sellerPrice / factor;
-
-				if(sellerPrice < priceInit) return -1;
-				return sellerPrice;
-			}
-		}
-		return Double.NaN;
+	public float updatePriceSupp(float previousSuppOffer, float currentNegoOffer, float previousNegoOffer) {
+		float factor = random.nextFloat(5, 11);
+		previousSuppOffer -= previousSuppOffer / factor;
+		return previousSuppOffer;
 	}
+
+	@Override
+	public float updatePriceNego(float previousSuppOffer, float currentSuppOffer, float previousNegoOffer) {
+		float factor = random.nextFloat(5, 11);
+		previousNegoOffer += previousNegoOffer / factor;
+		return previousNegoOffer;
+	}
+//				if(buyerPrice < priceInit / 2) return -1;
+//				double factor = random.nextDouble(5, 11);
+//				sellerPrice -= sellerPrice / factor;
+//				if(sellerPrice < priceInit) return -1;
+//				return sellerPrice;
+//			}
+//		}
+//		return Double.NaN;
+//	}
 }

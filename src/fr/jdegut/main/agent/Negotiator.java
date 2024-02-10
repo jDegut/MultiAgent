@@ -25,6 +25,12 @@ public class Negotiator extends Agent {
         this.buyerAccept = 0;
     }
 
+    public Negotiator(String name, Strategy s) {
+        super(name);
+        this.buyerAccept = 0;
+        setStrategy(s);
+    }
+
     public Strategy getStrategy() {
         return strategy;
     }
@@ -52,7 +58,8 @@ public class Negotiator extends Agent {
                 int supplierID = (Integer) firstMatch[1];
                 float budget = this.getMoney();
                 // On envoie au supplier une première offre
-                this.env.getSuppByID(supplierID).offers.put(this, Ticket.generateRandomPrice(budget/100, budget/2));
+                this.initialOfferToSupplier = Ticket.generateRandomPrice(budget/100, budget/2);
+                this.env.getSuppByID(supplierID).offers.put(this, this.initialOfferToSupplier);
                 while(this.supplierAccept == 0) {
                     // On utilise cette boucle while pour attendre la réponse du supplier
                     // C'est dans le code du supplier que l'on gère la négociation, ici on ne fait qu'attendre

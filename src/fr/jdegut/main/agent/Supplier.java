@@ -25,6 +25,14 @@ public class Supplier extends Agent {
         this.offer.attributeTo(this.getId());
     }
 
+    public Supplier(String name, Strategy s) {
+        super(name);
+        this.offer = CitiesCompanies.getRandomTicket();
+        this.hasBeenSold = false;
+        this.offer.attributeTo(this.getId());
+        setStrategy(s);
+    }
+
     @Override
     public void run() {
         while (!this.hasBeenSold) {

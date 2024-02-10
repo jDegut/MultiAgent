@@ -4,19 +4,24 @@ import fr.jdegut.main.agent.Agent;
 import fr.jdegut.main.agent.Supplier;
 
 public class StrategyJTMB extends Strategy{
+
 	@Override
-	public double getInitPrice(Agent agent, double price) {
-		if(agent instanceof Supplier) {
-			return price;
+	public boolean dealAccepted(float newPrice, boolean supplier) {
+		if (supplier) {
+			return (newPrice < this.minSupplier / 4);
+		} else {
+			return (newPrice > this.maxNegotiator * 4);
 		}
-		return Double.NaN;
+	}
+	@Override
+	public float updatePriceSupp(float previousSuppOffer, float currentNegoOffer, float previousNegoOffer) {
+
+		return Float.NaN;
 	}
 
 	@Override
-	public double updatePrice(Agent agent, double priceInit, double sellerPrice, double buyerPrice) {
-		if(agent instanceof Supplier) {
-			return (sellerPrice + buyerPrice) / 2;
-		}
-		return Double.NaN;
+	public float updatePriceNego(float previousSuppOffer, float currentSuppOffer, float previousNegoOffer) {
+
+		return Float.NaN;
 	}
 }
