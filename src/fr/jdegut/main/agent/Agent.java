@@ -11,6 +11,7 @@ public abstract class Agent implements Runnable {
 
     private int id;
     public String name;
+
     protected Environnement env;
     private Strategy strategy;
     private float money;
@@ -78,6 +79,7 @@ public abstract class Agent implements Runnable {
 
     protected void deleteItself() {
         // Quand l'agent a fini sa tache, il est retiré de l'environnement
+        System.out.println("Agent " + this.name + " supprimé");
         this.env.deleteAgent(this.id);
     }
 }

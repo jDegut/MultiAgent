@@ -31,6 +31,7 @@ public class Supplier extends Agent {
         this.hasBeenSold = false;
         this.offer.attributeTo(this.getId());
         setStrategy(s);
+        System.out.println("Supplier " + name + " created with ticket " + this.offer.arrival + " and budget " + this.getMoney());
     }
 
     @Override
@@ -71,6 +72,7 @@ public class Supplier extends Agent {
                 Future<?> negotiationTask = executor.submit(() -> {
                     int negoID = negotiator.getId();
                     Negotiation negotiation = new Negotiation(this, this.env.getNegoByID(negoID), this.offer);
+                    System.out.println("Supplier " + this.name + " started a negotiation with Negotiator " + negotiator.name + " about " + this.offer.arrival);
                     boolean result = negotiation.negotiate();   // True si la négotiation entre l'instance du supplier et le negotiator
                     // a menée à un accord
 
@@ -103,6 +105,7 @@ public class Supplier extends Agent {
             for (Negotiator n : agreements.keySet()) {
                 if (n.getId() != highestBidNegotiator.getId()) {
                     n.supplierAccept = -1;      // Dire non à tous les autres
+                    System.out.println("Supplier " + this.name + " turned down offer from Negotiator " + n.name + " for " + this.offer.arrival);
                 }
             }
 
@@ -110,6 +113,7 @@ public class Supplier extends Agent {
             this.offer.attributeTo(highestBidNegotiator.getId());      // Ré-attribution du ticket
             highestBidNegotiator.offer = this.offer;        // Envoi du ticket au negotiator
             this.hasBeenSold = true;                    // Le ticket a été vendu
+            System.out.println("Supplier " + this.name + " accepted offer from Negotiator " + highestBidNegotiator.name + " with destination " + highestBidNegotiator.offer.arrival + " for " + highestBid);
         }
         this.deleteItself();
     }

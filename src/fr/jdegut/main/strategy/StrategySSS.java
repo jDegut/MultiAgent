@@ -15,26 +15,30 @@ public class StrategySSS extends Strategy {
 		}
 	}
 
+	// Smart Secure Safe
+	// A pour stratégie de ne prendre que des marges moins importantes que son interlocuteur
 	@Override
 	public float updatePriceSupp(float previousSuppOffer, float currentNegoOffer, float previousNegoOffer) {
-		float factor = random.nextFloat(5, 11);
-		previousSuppOffer -= previousSuppOffer / factor;
-		return previousSuppOffer;
+		float negoDiff = Math.abs(currentNegoOffer - previousNegoOffer);
+		float divFactor = random.nextInt(50, 90) / 100;
+		float newPrice = previousSuppOffer - (negoDiff * divFactor);
+		if (dealAccepted(newPrice, true)) {
+			return newPrice;
+		} else {
+			return -1;
+		}
 	}
 
 	@Override
 	public float updatePriceNego(float previousSuppOffer, float currentSuppOffer, float previousNegoOffer) {
-		float factor = random.nextFloat(5, 11);
-		previousNegoOffer += previousNegoOffer / factor;
-		return previousNegoOffer;
+		float suppDiff = Math.abs(currentSuppOffer - previousSuppOffer);
+		float divFactor = random.nextInt(50, 90) / 100;
+		float newPrice = previousNegoOffer - (suppDiff * divFactor);
+		if (dealAccepted(newPrice, false)) {
+			return newPrice;
+		} else {
+			return -1;
+		}
 	}
-//				if(buyerPrice < priceInit / 2) return -1;
-//				double factor = random.nextDouble(5, 11);
-//				sellerPrice -= sellerPrice / factor;
-//				if(sellerPrice < priceInit) return -1;
-//				return sellerPrice;
-//			}
-//		}
-//		return Double.NaN;
-//	}
+
 }

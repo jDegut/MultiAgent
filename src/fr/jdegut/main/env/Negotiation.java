@@ -14,7 +14,6 @@ public class Negotiation {
 	private final Ticket ticket;
 	private final Supplier supplier;
 	private final Negotiator negotiator;
-	private float agreedPrice;
 	public float supplierMin;
 	public float negotiatorMax;
 
@@ -23,29 +22,29 @@ public class Negotiation {
 		this.ticket = ticket;
 		this.supplier = supplier;
 		this.negotiator = negotiator;
-		this.agreedPrice = 0;
 	}
 
+	// Simule une negociation entre un supplier et un negotiator, chacun suivant sa propre stratégie
+	// Renvoie seulement un booléen indiquant si la négociation a réussi ou non, on trouve le prix d'accord via getAgreedPrice()
 	public boolean negotiate() {
-		Strategy negoS = this.negotiator.getStrategy();
+		Strategy negoS = this.negotiator.getStrategy();		// Chargement des stratégies
 		Strategy suppS = this.supplier.getStrategy();
-		suppS.minSupplier = this.ticket.price;
+		suppS.minSupplier = this.ticket.price;			// Prix min et max que les negociants ne veulent pas dépasser
 		negoS.maxNegotiator = this.negotiator.initialOfferToSupplier;
 		this.supplierMin = this.ticket.price;
 		this.negotiatorMax = this.negotiator.initialOfferToSupplier;
 
 		while (this.negotiatorMax < this.supplierMin) {
-			if (this.agreedPrice == -1) {
+			if (this.negotiatorMax == -1 || this.supplierMin == -1) {		// Si l'un des deux protagonistes ne veut plus négocier
 				return false;
 			}
 			this.negotiatorMax = negoS.updatePriceNego(this.previousSuppOffer, this.supplierMin, this.previousNegoOffer);
-			this.previousNegoOffer = this.negotiatorMax;
+			this.previousNegoOffer = this.negotiatorMax;		// Mise à jour des prix pour que la négociation aboutisse
 
 			this.supplierMin = suppS.updatePriceSupp(this.previousNegoOffer, this.negotiatorMax, this.previousNegoOffer);
-			this.previousSuppOffer = this.supplierMin;
+			this.previousSuppOffer = this.supplierMin;			// Mise à jour des prix pour que la négociation aboutisse
 
 		}
-		this.agreedPrice = this.negotiatorMax;
 		return true;
 	}
 
@@ -58,6 +57,6 @@ public class Negotiation {
 	}
 
 	public float getAgreedPrice() {
-		return this.agreedPrice;
+		return this.negotiatorMax;
 	}
 }

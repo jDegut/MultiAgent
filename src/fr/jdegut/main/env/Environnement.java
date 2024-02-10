@@ -60,11 +60,22 @@ public class Environnement {
 	}
 
 	public void run() {
+		List<Thread> threads = new ArrayList<>();
 
-		startDate = LocalDateTime.now();
+		for (Agent agent : agents) {
+			// Créer un nouveau thread pour chaque agent et démarrer le thread
+			Thread thread = new Thread(agent);
+			threads.add(thread);
+			thread.start();
+		}
 
-		for(Agent agent : this.agents) {
-			new Thread(agent).start();
+		// Attendre que tous les threads soient terminés
+		for (Thread thread : threads) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

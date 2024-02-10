@@ -19,8 +19,9 @@ public class Buyer extends Agent {
     public Buyer(String name) {
         super(name);
         this.wantedDestination = CitiesCompanies.getRandomDestination();
-        this.maxPayPrice = generateRandomPrice();
+        this.maxPayPrice = generateRandomPrice(100, 5000);
         this.requestFulfilled = false;
+        System.out.println("Buyer " + name + " created with destination " + this.wantedDestination + " and budget " + this.getMoney());
     }
 
     public Buyer (String name, Strategy s) {
@@ -49,9 +50,11 @@ public class Buyer extends Agent {
                     t.attributeTo(this.getId());
                     this.requestFulfilled = true;       // On est d'accord
                     this.env.getNegoByID(negotiatorID).buyerAccept = 1; // Dire au négo qu'on a accepté son offre
+                    System.out.println("Buyer " + this.name + " accepted offer from Negotiator " + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival + " for " + t.price);
                 } else {
                     this.maxPayPrice *= 1.05;           // Sinon on augmente de 5% notre prix max
                     this.env.getNegoByID(negotiatorID).buyerAccept = -1;    // Dire au négo qu'on a refusé son offre
+                    System.out.println("Buyer " + this.name + " refused offer from Negotiator " + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival);
                 }
             }
         }
@@ -59,7 +62,7 @@ public class Buyer extends Agent {
     }
 
 
-    private static float generateRandomPrice() {
-        return new Random().nextInt(500, 5000);
+    private static float generateRandomPrice(int x, int y) {
+        return new Random().nextInt(x, y);
     }
 }

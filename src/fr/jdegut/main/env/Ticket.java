@@ -22,7 +22,7 @@ public class Ticket {
     }
 
     public Ticket(String departure, String arrival, String company) {
-        this(departure, arrival, generateRandomPrice(500, 5000), company);
+        this(departure, arrival, generateRandomPrice(50, 5000), company);
     }
 
     // Le ticket est attribué à un agent, au départ c'est au supplier, puis au négo
@@ -32,6 +32,6 @@ public class Ticket {
     }
 
     public static float generateRandomPrice(float x, float y) {
-        return new Random().nextFloat(x, y);
+        return new Random().nextInt((int) Math.round(x), (int) Math.round(y));
     }
 }

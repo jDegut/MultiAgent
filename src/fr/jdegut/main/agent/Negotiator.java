@@ -17,7 +17,6 @@ public class Negotiator extends Agent {
     // 1 si le supplier a accepté
     public int buyerAccept;     // 0 à l'initialisation, -1 si le buyer a refusé (on repasse alors à 0)
                                 // 1 si le buyer a accepté
-    private Negotiation bestNegotiation;
     public Float initialOfferToSupplier;
 
     public Negotiator(String name) {
@@ -29,6 +28,7 @@ public class Negotiator extends Agent {
         super(name);
         this.buyerAccept = 0;
         setStrategy(s);
+        System.out.println("Negotiator " + name +  " with budget " + this.getMoney());
     }
 
     public Strategy getStrategy() {
@@ -58,8 +58,9 @@ public class Negotiator extends Agent {
                 int supplierID = (Integer) firstMatch[1];
                 float budget = this.getMoney();
                 // On envoie au supplier une première offre
-                this.initialOfferToSupplier = Ticket.generateRandomPrice(budget/100, budget/2);
+                this.initialOfferToSupplier = Ticket.generateRandomPrice(budget/100, budget/3);
                 this.env.getSuppByID(supplierID).offers.put(this, this.initialOfferToSupplier);
+                System.out.println("Negotiator " + this.name + " sent an offer of " + this.initialOfferToSupplier + " with destination " + this.offer.arrival + " to supplier " + this.env.getSuppByID(supplierID).name);
                 while(this.supplierAccept == 0) {
                     // On utilise cette boucle while pour attendre la réponse du supplier
                     // C'est dans le code du supplier que l'on gère la négociation, ici on ne fait qu'attendre
@@ -77,6 +78,7 @@ public class Negotiator extends Agent {
             Object[] firstMatch = goodDeals.get(0);
             int buyerID = (Integer) firstMatch[0];
             this.env.getBuyerByID(buyerID).negotiatorOffers.add(this.offer);
+            System.out.println("Negotiator " + this.name + " sent an offer of " + this.offer.price + " with destination " + this.offer.arrival + " to buyer " + this.env.getSuppByID(buyerID).name);
             while(this.buyerAccept == 0) {
                 // On utilise cette boucle while pour attendre la réponse du buyer
             }
