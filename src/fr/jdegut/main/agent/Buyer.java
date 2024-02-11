@@ -22,7 +22,7 @@ public class Buyer extends Agent {
     public Buyer(String name, Environnement env) {
         super(name, env);
         this.wantedDestination = CitiesCompanies.getRandomDestination();
-        this.maxPayPrice = generateRandomPrice(100, 5000);
+        this.maxPayPrice = generateRandomPrice(200, 2500);
         this.requestFulfilled = false;
         this.negotiatorOffers = new ArrayList<>();
         System.out.println(AnsiColors.CREATED + "|" + AnsiColors.Buyer + name + " with destination " + this.wantedDestination + " and budget " + this.getMoney());
@@ -61,7 +61,7 @@ public class Buyer extends Agent {
                     this.env.getNegoByID(negotiatorID).buyerAccept = 1; // Dire au négo qu'on a accepté son offre
                     System.out.println(AnsiColors.OFFER_ACCEPTED + "|" + AnsiColors.Buyer + this.name + " from" + AnsiColors.Negotiator + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival + " for " + t.price);
                 } else {
-                    this.maxPayPrice *= 1.05;           // Sinon on augmente de 5% notre prix max
+                    this.maxPayPrice *= 1.07;           // Sinon on augmente de 7% notre prix max
                     this.env.getNegoByID(negotiatorID).buyerAccept = -1;    // Dire au négo qu'on a refusé son offre
                     System.out.println(AnsiColors.OFFER_DECLINED + "|" + AnsiColors.Buyer + this.name + " from" + AnsiColors.Negotiator + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival);
                 }

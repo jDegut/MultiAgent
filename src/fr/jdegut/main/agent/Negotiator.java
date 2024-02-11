@@ -110,7 +110,7 @@ public class Negotiator extends Agent {
         b.negotiatorOffers.add(this.offer);
         System.out.println(AnsiColors.OFFER_SENT + "|" + AnsiColors.Negotiator + this.name + " to" + AnsiColors.Buyer + b.name + " with destination " + this.offer.arrival + " for " + this.offer.price);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +118,7 @@ public class Negotiator extends Agent {
             return true;
         } else { // (this.buyerAccept == -1)
             this.buyerAccept = 0;       // Réponse négative, on recommence avec un meilleur prix
-            this.offer.price *= 0.95;
+            this.offer.price *= 0.93;
             return makeOfferToBuyer(buyerID);
         }
     }

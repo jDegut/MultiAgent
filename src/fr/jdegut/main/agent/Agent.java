@@ -71,7 +71,7 @@ public abstract class Agent implements Runnable {
     }
 
     private static float generateRandomMoney() {
-        return new Random().nextInt(500, 20000);
+        return new Random().nextInt(500, 5000);
     }
 
     @Override

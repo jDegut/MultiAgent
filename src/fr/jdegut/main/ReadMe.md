@@ -1,4 +1,4 @@
-ADAM Matthias
+ADAM Matthias  
 DEGUT Julian
 
 # Projet Système Multi-Agents
@@ -73,7 +73,7 @@ Une fois leur tâche terminée, les agents appelent la fonction deleteItself() q
 ..Si une offre est arrivée :  
 ....Regarder si le prix de l'offre nous convient.  
 ....Si le prix est acceptable : accepter l'offre et indiquer au Negotiator qu'on accepte le deal.  
-....Sinon : Refuser l'offre et augmenter le prix maximum auquel on accepte un Ticket de 5%.  
+....Sinon : Refuser l'offre et augmenter le prix maximum auquel on accepte un Ticket de 6%.  
 ..Fin [tant que]  
 Suppression de l'agent.  
 
@@ -97,7 +97,7 @@ Suppression de l'agent.
 ..Si le Buyer n'existe plus, c'est qu'il a accepté une offre d'un autre Negotiator, revenir au premier [Tant que].  
 ..Sinon, attendre la réponse du Buyer.  
 ..Si le Buyer accepte, la tâche est terminée, l'agent peut être supprimé.  
-..Si le Buyer refuse, refaire une proposition en réduisant l'offre de 5%.
+..Si le Buyer refuse, refaire une proposition en réduisant l'offre de 6%.
 ..Fin [Tant que]  
 
 #### Supplier
@@ -119,14 +119,28 @@ Suppression de l'agent.
 
 ### Stratégies 
 
-Note : 
+Notes : 
 - toutes les stratégies implémente de l'aléatoire, pour éviter d'une part une certaine redondance, et d'une autre part pour empêcher un agent de découvrir la stratégie d'un autre pour s'adapter à celle-ci, l'aléatoire est donc utilisé ici comme atout de diversité et de sécurité.
 - les stratégies sont séparées en deux selon si l'agent appliquant celle-ci est un Supplier ou un Negotiator. En effet les décisions et marges appliquées sont légèrement différentes selon le type de l'agent.
+- **dealAccepted()** : fonction indiquant si l'agent refuse de continuer la négociation car les prix sont trop hauts / bas.  
+- **updatePrice()** : fonction réalisant la décision de la stratégie et proposant la nouvelle offre de l'agent.  
 
 #### Boomerang
 
+- **dealAccepted()** : si la nouvelle offre est 2 fois plus / moins importante que l'offre initiale, se retirer de la négociation.  
+- **updatePrice()** : calculer la différence entre notre offre précédente et celle fait par notre adversaire, la diviser par un facteur aléatoire entre 0.5 (*2) et 3, prendre notre offre précédente et proposer une marge du delta précédent divisé par le facteur aléatoire.  
+
 #### GRDT
+
+- **dealAccepted()** : si la nouvelle offre est 1.5 fois plus / moins importante que l'offre initiale, se retirer de la négociation.  
+- **updatePrice()** : calculer la différence entre notre offre précédente et celle faite par notre adversaire, 20% de chance de la multiplier par un facteur aléatoire entre 1.5 et 3, 80% de la diviser par ce facteur (comportement stochastique) et proposer une marge du résultat trouvé.  
 
 #### JTMB
 
+- **dealAccepted()** : si la nouvelle offre est 4 fois plus / moins importante que l'offre initiale, se retirer de la négociation.  
+- **updatePrice()** : calculer la différence entre notre offre précédente et celle faite par notre adversaire, tenter de la prédire en parallèle (marge aléatoire entre 5 et 25%), si la différence réelle est plus important que la différence prédite, alors proposer une marge 2 à 4 fois plus importante (récompense), sinon proposer une marge 0.8 à 1.2 fois l'importance (car l'adversaire n'a pas été assez fair-play à notre goût dans la négociation).   
+
 #### SSS
+
+- **dealAccepted()** : si la nouvelle offre est 1.5 fois plus / moins importante que l'offre initiale, se retirer de la négociation.  
+- **updatePrice()** : calculer la différence entre notre offre précédente et celel faite par notre adversaire, prendre aléatoirement 50 à 90% de celle-ci et l'appliquer à notre nouvelle offre par rapport à la précédente.  
