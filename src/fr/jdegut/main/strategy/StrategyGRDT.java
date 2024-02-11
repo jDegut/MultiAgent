@@ -22,9 +22,9 @@ public class StrategyGRDT extends Strategy{
 		float previousDiff = Math.abs(currentNegoOffer - previousSuppOffer);
 		float marge = 0;
 		if (iGoCrazy > 0.8) {
-			marge = random.nextInt((int) Math.round(previousDiff * 1.5), (int) Math.round(previousDiff * 3));
+			marge = random.nextInt((int) Math.round(previousDiff * 1.5) + 1, (int) Math.round(previousDiff * 3) + 2);
 		} else {
-			marge = random.nextInt((int) Math.round(previousDiff / 1.5), (int) Math.round(previousDiff / 3));
+			marge = random.nextInt((int) Math.round(previousDiff / 1.5) + 1, (int) Math.round(previousDiff / 3) + 2);
 		}
 		float newPrice = previousSuppOffer - marge;
 		if (dealAccepted(newPrice, true)) {
@@ -42,7 +42,7 @@ public class StrategyGRDT extends Strategy{
 		if (iGoCrazy > 0.85) {
 			gain = random.nextInt((int) Math.round(previousDiff * 1.5), (int) Math.round(previousDiff * 3));
 		} else {
-			gain = random.nextInt((int) Math.round(previousDiff / 1.5), (int) Math.round(previousDiff / 3));
+			gain = random.nextInt((int) Math.round(previousDiff / 3), (int) Math.round(previousDiff / 1.5));
 		}
 		float newPrice = previousNegoOffer + gain;
 		if (dealAccepted(newPrice, false)) {

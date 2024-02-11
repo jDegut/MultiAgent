@@ -26,37 +26,37 @@ public class Environnement {
 
 
 	// Crée X buyers aléatoires
-	public void generateRandomBuyers(int X) {
+	public void generateRandomBuyers(int X, Environnement env) {
 		for (int i = 0; i < X; i++) {
-			Buyer b = new Buyer(generateRandomName());
+			Buyer b = new Buyer(generateRandomName(), env);
 			buyers.add(b);
 			agents.add(b);
 		}
 	}
 
 	// Crée X suppliers aléatoires
-	public void generateRandomSuppliers(int X) {
+	public void generateRandomSuppliers(int X, Environnement env) {
 		for (int i = 0; i < X; i++) {
-			Supplier s = new Supplier(generateRandomName(), getRandomStrategy());
+			Supplier s = new Supplier(generateRandomName(), getRandomStrategy(), env);
 			suppliers.add(s);
 			agents.add(s);
 		}
 	}
 
 	// Crée X négociateurs aléatoires
-	public void generateRandomNegotiator(int X) {
+	public void generateRandomNegotiator(int X, Environnement env) {
 		for (int i = 0; i < X; i++) {
-			Negotiator n = new Negotiator(generateRandomName(), getRandomStrategy());
+			Negotiator n = new Negotiator(generateRandomName(), getRandomStrategy(), env);
 			negotiators.add(n);
 			agents.add(n);
 		}
 	}
 
 	// Crée des buyers, suppliers et négociateurs aléatoires
-	public void generateRandomAgents(int buyers, int suppliers, int negotiators) {
-		generateRandomBuyers(buyers);
-		generateRandomSuppliers(suppliers);
-		generateRandomNegotiator(negotiators);
+	public void generateRandomAgents(int buyers, int suppliers, int negotiators, Environnement env) {
+		generateRandomBuyers(buyers, env);
+		generateRandomSuppliers(suppliers, env);
+		generateRandomNegotiator(negotiators, env);
 	}
 
 	public void run() {
@@ -119,7 +119,7 @@ public class Environnement {
 				return b;
 			}
 		}
-		throw new NoSuchElementException("No Buyer found with ID: " + id);
+		return null;
 	}
 
 	public static String generateRandomName() {

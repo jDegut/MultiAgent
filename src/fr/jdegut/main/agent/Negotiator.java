@@ -1,5 +1,7 @@
 package fr.jdegut.main.agent;
 
+import fr.jdegut.main.env.AnsiColors;
+import fr.jdegut.main.env.Environnement;
 import fr.jdegut.main.env.Negotiation;
 import fr.jdegut.main.env.Ticket;
 import fr.jdegut.main.strategy.Strategy;
@@ -19,16 +21,16 @@ public class Negotiator extends Agent {
                                 // 1 si le buyer a accepté
     public Float initialOfferToSupplier;
 
-    public Negotiator(String name) {
-        super(name);
+    public Negotiator(String name, Environnement env) {
+        super(name, env);
         this.buyerAccept = 0;
     }
 
-    public Negotiator(String name, Strategy s) {
-        super(name);
+    public Negotiator(String name, Strategy s, Environnement env) {
+        super(name, env);
         this.buyerAccept = 0;
         setStrategy(s);
-        System.out.println("Negotiator " + name +  " with budget " + this.getMoney());
+        System.out.println(AnsiColors.CREATED + "|" + AnsiColors.Negotiator + name +  " with budget " + this.getMoney());
     }
 
     public Strategy getStrategy() {
@@ -50,6 +52,12 @@ public class Negotiator extends Agent {
             // Récupération des destinations offertes par les suppliers et demandées par les buyers
             // + shuffle pour ne pas que tous les negotiators aillent sur la même offre en premier
             List<Object[]> goodDeals = findMatches(buyerDemands, supplierOffers);
+
+            if (goodDeals == null || goodDeals.isEmpty()) {
+                System.out.println(AnsiColors.OFFER_DECLINED + "|" + AnsiColors.Negotiator + this.name + " found no match, deleting..");
+                break;
+            }
+
             Collections.shuffle(goodDeals);
 
             while (this.supplierAccept != 1) {
@@ -60,33 +68,59 @@ public class Negotiator extends Agent {
                 // On envoie au supplier une première offre
                 this.initialOfferToSupplier = Ticket.generateRandomPrice(budget/100, budget/3);
                 this.env.getSuppByID(supplierID).offers.put(this, this.initialOfferToSupplier);
-                System.out.println("Negotiator " + this.name + " sent an offer of " + this.initialOfferToSupplier + " with destination " + this.offer.arrival + " to supplier " + this.env.getSuppByID(supplierID).name);
-                while(this.supplierAccept == 0) {
-                    // On utilise cette boucle while pour attendre la réponse du supplier
-                    // C'est dans le code du supplier que l'on gère la négociation, ici on ne fait qu'attendre
+                System.out.println(AnsiColors.OFFER_SENT + "|" + AnsiColors.Negotiator + this.name + " to" + AnsiColors.Supplier + this.env.getSuppByID(supplierID).name + " with destination " +  this.env.getSuppByID(supplierID).offer.arrival + " for " + this.initialOfferToSupplier);
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-                if (this.buyerAccept == -1) { // Si le supplier a refusé, on le retire de la liste et on recommence
-                    this.buyerAccept = 0;
+                // On utilise cette boucle while pour attendre la réponse du supplier
+                // C'est dans le code du supplier que l'on gère la négociation, ici on ne fait qu'attendre
+
+
+                if (this.supplierAccept == -1) { // Si le supplier a refusé, on le retire de la liste et on recommence
+                    this.supplierAccept = 0;
                     goodDeals.remove(0);
                 }
-                if (goodDeals.isEmpty()) {
+                if (this.supplierAccept == 1 || goodDeals == null || goodDeals.isEmpty()) {
                     break;
                     // Si la liste est vide, on doit recommencer du début pour récupérer d'autres bonnes affaires
                 }
             }
 
+            if (this.supplierAccept != 1) {
+                break;
+            }
+
             Object[] firstMatch = goodDeals.get(0);
             int buyerID = (Integer) firstMatch[0];
-            this.env.getBuyerByID(buyerID).negotiatorOffers.add(this.offer);
-            System.out.println("Negotiator " + this.name + " sent an offer of " + this.offer.price + " with destination " + this.offer.arrival + " to buyer " + this.env.getSuppByID(buyerID).name);
-            while(this.buyerAccept == 0) {
-                // On utilise cette boucle while pour attendre la réponse du buyer
-            }
-            if (this.buyerAccept == -1) {
-                this.buyerAccept = 0;       // Réponse négative, on recommence du début
+            if (makeOfferToBuyer(buyerID)) {
+                break;
             }
         }
         this.deleteItself();        // Sinon le job est accompli et on peut se delete
+    }
+
+    public boolean makeOfferToBuyer(int buyerID) {
+        Buyer b = this.env.getBuyerByID(buyerID);
+        if (b == null) {
+            return false;
+        }
+        b.negotiatorOffers.add(this.offer);
+        System.out.println(AnsiColors.OFFER_SENT + "|" + AnsiColors.Negotiator + this.name + " to" + AnsiColors.Buyer + b.name + " with destination " + this.offer.arrival + " for " + this.offer.price);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if (this.buyerAccept == 1) {
+            return true;
+        } else { // (this.buyerAccept == -1)
+            this.buyerAccept = 0;       // Réponse négative, on recommence avec un meilleur prix
+            this.offer.price *= 0.95;
+            return makeOfferToBuyer(buyerID);
+        }
     }
 
     public Map<Buyer, String> getBuyersDemand() {    // Récupération de toutes les demandes des buyers

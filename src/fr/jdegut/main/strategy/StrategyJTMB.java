@@ -23,9 +23,9 @@ public class StrategyJTMB extends Strategy{
 		float previousDiff = Math.abs(previousSuppOffer - currentNegoOffer);
 		float marge = 0;
 		if (negoDiff >= negoPredict) {
-			marge = random.nextInt((int) Math.round(previousDiff * 2), (int) Math.round(previousDiff * 4));
+			marge = random.nextInt((int) Math.round(previousDiff * 2) + 1, (int) Math.round(previousDiff * 4) + 2);
 		} else {
-			marge = random.nextInt((int) Math.round(previousDiff * 0.8), (int) Math.round(previousDiff * 1.2));
+			marge = random.nextInt((int) Math.round(previousDiff * 0.8) + 1, (int) Math.round(previousDiff * 1.2) + 2);
 		}
 		float newPrice = previousSuppOffer - marge;
 		if (dealAccepted(newPrice, true)) {

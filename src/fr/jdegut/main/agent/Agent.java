@@ -1,5 +1,6 @@
 package fr.jdegut.main.agent;
 
+import fr.jdegut.main.env.AnsiColors;
 import fr.jdegut.main.env.Environnement;
 import fr.jdegut.main.strategy.Strategy;
 
@@ -16,20 +17,21 @@ public abstract class Agent implements Runnable {
     private Strategy strategy;
     private float money;
 
-    protected Agent(String name, Strategy strategy, float money) {
+    protected Agent(String name, Strategy strategy, float money, Environnement env) {
         Random rand = new Random();
         this.name = name;
         this.id = rand.nextInt(1000000, 2000000);
         this.strategy = strategy;
         this.money = money;
+        this.env = env;
     }
 
-    protected Agent(String name) {
-        this(name, null, generateRandomMoney());
+    protected Agent(String name, Environnement env) {
+        this(name, null, generateRandomMoney(), env);
     }
 
-    protected Agent(String name, Strategy strategy) {
-        this(name, strategy, generateRandomMoney());
+    protected Agent(String name, Strategy strategy, Environnement env) {
+        this(name, strategy, generateRandomMoney(), env);
     }
 
     public int getId() {
@@ -74,12 +76,12 @@ public abstract class Agent implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Agent " + id + " is running");
+
     }
 
     protected void deleteItself() {
         // Quand l'agent a fini sa tache, il est retiré de l'environnement
-        System.out.println("Agent " + this.name + " supprimé");
+        System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
         this.env.deleteAgent(this.id);
     }
 }

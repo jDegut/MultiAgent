@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         // Créer l'environnement
         Environnement env = new Environnement();
-        env.generateRandomAgents(4, 8, 4);
+        env.generateRandomAgents(1, 1, 2, env);
         env.run();
     }
 }
