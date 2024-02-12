@@ -59,7 +59,7 @@ public class Buyer extends Agent {
                     t.attributeTo(this.getId());
                     this.requestFulfilled = true;       // On est d'accord
                     this.env.getNegoByID(negotiatorID).buyerAccept = 1; // Dire au négo qu'on a accepté son offre
-                    System.out.println(AnsiColors.OFFER_ACCEPTED + "|" + AnsiColors.Buyer + this.name + " from" + AnsiColors.Negotiator + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival + " for " + t.price);
+                    System.out.println(AnsiColors.OFFER_ACCEPTED + "|" + AnsiColors.Buyer + this.name + " from" + AnsiColors.Negotiator + this.env.getNegoByID(negotiatorID).name + " for destination " + this.env.getNegoByID(negotiatorID).offer.arrival);
                 } else {
                     this.maxPayPrice *= 1.07;           // Sinon on augmente de 7% notre prix max
                     this.env.getNegoByID(negotiatorID).buyerAccept = -1;    // Dire au négo qu'on a refusé son offre

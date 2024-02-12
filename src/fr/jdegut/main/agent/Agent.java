@@ -83,10 +83,10 @@ public abstract class Agent implements Runnable {
     protected void deleteItself() {
         try {
             // Quand l'agent a fini sa tache, il est retiré de l'environnement
-            System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
+            System.out.println(AnsiColors.DELETED + "| Agent " + this.name);
             this.env.deleteAgent(this.id);
         } catch (ConcurrentModificationException e) {
-            System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
+            System.out.println(AnsiColors.DELETED + "| Agent " + this.name);
         }
     }
 }
