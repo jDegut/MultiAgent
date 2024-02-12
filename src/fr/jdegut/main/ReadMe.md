@@ -30,6 +30,9 @@ Il est important de noter que malgré l'aspect concurrentiel de notre environnem
 
 Plus d'informations concernant le fonctionnement précis des stratégies sont à retrouver plus loin ci-dessous.
 
+Les Negotiator peuvent aussi réaliser des coalitions afin de profiter de prix plus intéressants auprès des Supplier. Pour cela, il prennent compte l'état du marché et réalisent chacun indépendemment la décision de rejoindre la coalition ou non.  
+La décision reste un minimum stochastique afin de proposer une certaine diversité dans les choix.
+
 ## Utilité des Classes
 
 ### Dossier Agent
@@ -144,3 +147,8 @@ Notes :
 
 - **dealAccepted()** : si la nouvelle offre est 1.5 fois plus / moins importante que l'offre initiale, se retirer de la négociation.  
 - **updatePrice()** : calculer la différence entre notre offre précédente et celel faite par notre adversaire, prendre aléatoirement 50 à 90% de celle-ci et l'appliquer à notre nouvelle offre par rapport à la précédente.  
+
+### Coalition
+
+Les Negotiator peuvent réaliser un état des lieux de la situation de l'environnement afin de calculer une probabilité de succès de leur mission.  
+Plus la probabilité de succès est basse, plus les Negotiator auront tendance à vouloir former une coalition, si c'est le cas, alors ils bénéficieront d'une baisse de 10% sur le prix minimal que le Supplier souhaite recevoir lors d'une négociation.  

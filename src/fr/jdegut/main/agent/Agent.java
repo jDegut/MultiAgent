@@ -5,6 +5,7 @@ import fr.jdegut.main.env.Environnement;
 import fr.jdegut.main.strategy.Strategy;
 
 import java.time.LocalDateTime;
+import java.util.ConcurrentModificationException;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -80,8 +81,12 @@ public abstract class Agent implements Runnable {
     }
 
     protected void deleteItself() {
-        // Quand l'agent a fini sa tache, il est retiré de l'environnement
-        System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
-        this.env.deleteAgent(this.id);
+        try {
+            // Quand l'agent a fini sa tache, il est retiré de l'environnement
+            System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
+            this.env.deleteAgent(this.id);
+        } catch (ConcurrentModificationException e) {
+            System.out.println(AnsiColors.DELETED + " | Agent " + this.name);
+        }
     }
 }

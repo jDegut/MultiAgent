@@ -8,10 +8,14 @@ import fr.jdegut.main.strategy.Strategy;
 
 import java.util.*;
 
+import static fr.jdegut.main.RandomSingle.random;
+
 // Le négociateur regarde les destinations de là où veulent aller les buyers et tentent de tirer le
 // meilleur prix des billets auprès des suppliers
 public class Negotiator extends Agent {
     private Strategy strategy;
+
+    public boolean coalition; // Le Negotiator trouve-t-il cela intéressant de faire une coalition.
 
     public Ticket offer; // Ticket dans le cas où le negotiator l'a acheté au supplier mais pas encore donné au Buyer
 
@@ -24,11 +28,13 @@ public class Negotiator extends Agent {
     public Negotiator(String name, Environnement env) {
         super(name, env);
         this.buyerAccept = 0;
+        this.coalition = false;
     }
 
     public Negotiator(String name, Strategy s, Environnement env) {
         super(name, env);
         this.buyerAccept = 0;
+        this.coalition = false;
         setStrategy(s);
         System.out.println(AnsiColors.CREATED + "|" + AnsiColors.Negotiator + name +  " with budget " + this.getMoney());
     }
@@ -44,23 +50,26 @@ public class Negotiator extends Agent {
     @Override
     public void run() {
         super.run();
+
         while (this.buyerAccept != 1) {
 
-            // Récupération de toutes les demandes des buyers et de toutes les offres des suppliers
-            Map<Buyer, String> buyerDemands = getBuyersDemand();
-            Map<Supplier, String> supplierOffers = getSuppliersOffers();
-            // Récupération des destinations offertes par les suppliers et demandées par les buyers
-            // + shuffle pour ne pas que tous les negotiators aillent sur la même offre en premier
-            List<Object[]> goodDeals = findMatches(buyerDemands, supplierOffers);
-
-            if (goodDeals == null || goodDeals.isEmpty()) {
-                System.out.println(AnsiColors.OFFER_DECLINED + "|" + AnsiColors.Negotiator + this.name + " found no match, deleting..");
-                break;
-            }
-
-            Collections.shuffle(goodDeals);
+            int buyerID = 0;
 
             while (this.supplierAccept != 1) {
+
+                // Récupération de toutes les demandes des buyers et de toutes les offres des suppliers
+                Map<Buyer, String> buyerDemands = getBuyersDemand();
+                Map<Supplier, String> supplierOffers = getSuppliersOffers();
+                // Récupération des destinations offertes par les suppliers et demandées par les buyers
+                // + shuffle pour ne pas que tous les negotiators aillent sur la même offre en premier
+                List<Object[]> goodDeals = findMatches(buyerDemands, supplierOffers);
+
+                if (goodDeals == null || goodDeals.isEmpty()) {
+                    System.out.println(AnsiColors.OFFER_DECLINED + "|" + AnsiColors.Negotiator + this.name + " found no match, deleting..");
+                    break;
+                }
+
+                Collections.shuffle(goodDeals);
 
                 Object[] firstMatch = goodDeals.get(0); // On prend le premier de la liste
                 int supplierID = (Integer) firstMatch[1];
@@ -84,6 +93,8 @@ public class Negotiator extends Agent {
                     goodDeals.remove(0);
                 }
                 if (this.supplierAccept == 1 || goodDeals == null || goodDeals.isEmpty()) {
+                    firstMatch = goodDeals.get(0);
+                    buyerID = (Integer) firstMatch[0];
                     break;
                     // Si la liste est vide, on doit recommencer du début pour récupérer d'autres bonnes affaires
                 }
@@ -93,13 +104,34 @@ public class Negotiator extends Agent {
                 break;
             }
 
-            Object[] firstMatch = goodDeals.get(0);
-            int buyerID = (Integer) firstMatch[0];
-            if (makeOfferToBuyer(buyerID)) {
-                break;
+            try {       // Essayer de faire une offre au Buyer
+                if (makeOfferToBuyer(buyerID)) {
+                    break;
+                }
+                } catch (ConcurrentModificationException e) {   // Si celui-ci n'existe plus, recommencer du début
             }
         }
         this.deleteItself();        // Sinon le job est accompli et on peut se delete
+    }
+
+    public void getIntoCoalition() {
+        Environnement env = this.getEnv();
+
+        // Calcul de la probabilité de succès d'un Negotiator en tenant compte de la compétitivité entre les Negotiator
+        float buyers = (float) env.buyers.size();
+        float supp = (float) env.suppliers.size();
+        float minBuySup = Math.min(buyers, supp);
+        float negos = (float) env.negotiators.size();
+        float successProbability1 = negos * negos * 2;
+        float successProbability2 =  minBuySup * minBuySup; // Nombre d'offres possibles / nombre de Negotiator
+        float successProbability = successProbability2 / successProbability1;
+
+        if (successProbability >= 1) { // Si il y a plus d'offres que d'agents, la coalition ne sert à rien et ne nous intéresse pas.
+            this.coalition = false;
+        } else {        // Sinon, la probabilité d'être intéressé par une coalition est inversement proportionnelle à la probabilité de succès.
+            float proba = random.nextFloat();
+            this.coalition = (proba <= 1 - successProbability);
+        }
     }
 
     public boolean makeOfferToBuyer(int buyerID) {
@@ -110,7 +142,7 @@ public class Negotiator extends Agent {
         b.negotiatorOffers.add(this.offer);
         System.out.println(AnsiColors.OFFER_SENT + "|" + AnsiColors.Negotiator + this.name + " to" + AnsiColors.Buyer + b.name + " with destination " + this.offer.arrival + " for " + this.offer.price);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

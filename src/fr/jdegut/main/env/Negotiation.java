@@ -32,6 +32,9 @@ public class Negotiation {
 		suppS.minSupplier = this.ticket.price;			// Prix min et max que les negociants ne veulent pas dépasser
 		negoS.maxNegotiator = this.negotiator.initialOfferToSupplier;
 		this.supplierMin = this.ticket.price;
+		if (this.negotiator.coalition) {	// Si le Negotiator fait partie de la coalition, le Supplier réduit de 10% le prix minimal qu'il veut recevoir.
+			this.supplierMin *= 0.9;
+		}
 		this.negotiatorMax = this.negotiator.initialOfferToSupplier;
 
 		while (this.negotiatorMax < this.supplierMin) {

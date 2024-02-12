@@ -14,6 +14,7 @@ public class AnsiColors {
 
     public static final String CREATED = BLUE + "CREATED " + RESET;
     public static final String Buyer = YELLOW + " Buyer " + RESET;
+
     public static final String Negotiator = WHITE + " Negotiator " + RESET;
 
     public static final String Supplier = MAGENTA + " Supplier " + RESET;
@@ -21,7 +22,8 @@ public class AnsiColors {
     public static final String OFFER_ACCEPTED = GREEN + "OFFER ACCEPTED " + RESET;;
     public static final String OFFER_DECLINED = RED + "OFFER DECLINED " + RESET;;
     public static final String NEGOTIATION = BRIGHT_BLUE + "NEGOTIATION " + RESET;
-    public static final String DELETED = BLACK + "DELETED " + RESET;;
+    public static final String DELETED = BLACK + "DELETED " + RESET;
+    public static final String COALITION = RED + "COALITION " + RESET;
 
 
 }

@@ -14,7 +14,7 @@ public class Environnement {
 	public static LocalDateTime startDate;
 	private final List<Agent> agents;
 	public final List<Supplier> suppliers;
-	private final List<Negotiator> negotiators;
+	public final List<Negotiator> negotiators;
 	public final List<Buyer> buyers;
 
 	public Environnement() {
@@ -57,6 +57,26 @@ public class Environnement {
 		generateRandomBuyers(buyers, env);
 		generateRandomSuppliers(suppliers, env);
 		generateRandomNegotiator(negotiators, env);
+	}
+
+	public void runCoalitions() {		// On compte le nombre de coalitions
+		float count = 0;
+		float negotiatorCount = (float) this.negotiators.size();
+		for (Negotiator n : this.negotiators) {
+			n.getIntoCoalition();
+			if (n.coalition) {
+				count++;
+			}
+		}
+		float percentageCoalition = count / negotiatorCount * 100;
+		System.out.println("=======================================================");
+		System.out.println(AnsiColors.COALITION + "| " + AnsiColors.CYAN + percentageCoalition + "%" + AnsiColors.RESET + " of the" + AnsiColors.Negotiator + "allied themselves");
+		System.out.println("=======================================================");
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void run() {
@@ -115,6 +135,9 @@ public class Environnement {
 
 	public Buyer getBuyerByID(int id) {
 		for (Buyer b : this.buyers) {
+			if (b == null) {
+				return null;
+			}
 			if (b.getId() == id) {
 				return b;
 			}

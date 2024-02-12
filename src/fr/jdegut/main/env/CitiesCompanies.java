@@ -13,11 +13,11 @@ public class CitiesCompanies {
     // Stockage des villes et companies
     public static void insertCitiesCompanies() {
         cities.add("Paris");
-        //cities.add("London");
-        //cities.add("Pyongyang");
-        //cities.add("New York");
-        //cities.add("Berlin");
-        //cities.add("Helsinki");
+        cities.add("London");
+        cities.add("Pyongyang");
+        cities.add("New York");
+        cities.add("Berlin");
+        cities.add("Helsinki");
 
         companies.add("AirFrance");
         companies.add("EasyJet");

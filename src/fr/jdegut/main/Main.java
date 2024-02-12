@@ -10,9 +10,14 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        // Créer l'environnement
+        // Création de l'environnement
         Environnement env = new Environnement();
-        env.generateRandomAgents(1, 1, 2, env);
+        // Création des agents
+        env.generateRandomAgents(240, 240, 200, env);
+        // Décommenter / Commenter la ligne suivante pour toggle les coalitions
+        env.runCoalitions();
         env.run();
     }
 }
+
+
