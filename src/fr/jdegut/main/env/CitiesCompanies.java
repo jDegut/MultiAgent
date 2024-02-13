@@ -14,8 +14,8 @@ public class CitiesCompanies {
     public static void insertCitiesCompanies() {
         cities.add("Paris");
         cities.add("London");
-        cities.add("Pyongyang");
-        cities.add("New York");
+        //cities.add("Pyongyang");
+        //cities.add("New York");
         cities.add("Berlin");
         cities.add("Helsinki");
 

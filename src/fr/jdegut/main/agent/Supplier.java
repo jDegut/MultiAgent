@@ -110,7 +110,7 @@ public class Supplier extends Agent {
             this.offer.attributeTo(highestBidNegotiator.getId());      // Ré-attribution du ticket
             highestBidNegotiator.offer = this.offer;        // Envoi du ticket au negotiator
             this.hasBeenSold = true;                    // Le ticket a été vendu
-            System.out.println(AnsiColors.OFFER_ACCEPTED + "|" + AnsiColors.Supplier + this.name + " from" + AnsiColors.Negotiator + highestBidNegotiator.name + " with destination " + highestBidNegotiator.offer.arrival);
+            System.out.println(AnsiColors.OFFER_ACCEPTED + "|" + AnsiColors.Supplier + this.name + " from" + AnsiColors.Negotiator + highestBidNegotiator.name + " with destination " + highestBidNegotiator.offer.arrival + " for " + highestBidNegotiator.initialOfferToSupplier);
         }
 
         this.deleteItself();

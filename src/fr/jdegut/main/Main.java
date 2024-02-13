@@ -13,7 +13,7 @@ public class Main {
         // Création de l'environnement
         Environnement env = new Environnement();
         // Création des agents
-        env.generateRandomAgents(240, 240, 200, env);
+        env.generateRandomAgents(7, 7, 6, env);
         // Décommenter / Commenter la ligne suivante pour toggle les coalitions
         env.runCoalitions();
         env.run();

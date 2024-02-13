@@ -33,7 +33,7 @@ public class Negotiation {
 		negoS.maxNegotiator = this.negotiator.initialOfferToSupplier;
 		this.supplierMin = this.ticket.price;
 		if (this.negotiator.coalition) {	// Si le Negotiator fait partie de la coalition, le Supplier réduit de 10% le prix minimal qu'il veut recevoir.
-			this.supplierMin *= 0.9;
+			this.supplierMin *= (1 - this.negotiator.getEnv().percentageCoalition / 3);
 		}
 		this.negotiatorMax = this.negotiator.initialOfferToSupplier;
 

@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Environnement {
 
-	public static LocalDateTime startDate;
+	public float percentageCoalition;
 	private final List<Agent> agents;
 	public final List<Supplier> suppliers;
 	public final List<Negotiator> negotiators;
@@ -68,9 +68,10 @@ public class Environnement {
 				count++;
 			}
 		}
-		float percentageCoalition = count / negotiatorCount * 100;
+		float percentageCoalition = count / negotiatorCount;
+		this.percentageCoalition = percentageCoalition;
 		System.out.println("=======================================================");
-		System.out.println(AnsiColors.COALITION + "| " + AnsiColors.CYAN + percentageCoalition + "%" + AnsiColors.RESET + " of the" + AnsiColors.Negotiator + "allied themselves");
+		System.out.println(AnsiColors.COALITION + "| " + AnsiColors.CYAN + percentageCoalition * 100 + "%" + AnsiColors.RESET + " of the" + AnsiColors.Negotiator + "allied themselves");
 		System.out.println("=======================================================");
 		try {
 			Thread.sleep(1500);

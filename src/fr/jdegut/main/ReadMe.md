@@ -3,13 +3,22 @@ DEGUT Julian
 
 # Projet Système Multi-Agents
 
-<img src="img.png" width="70%" height="auto">
+<img src="resources/img.png" width="70%" height="auto">
 
 ## Description
 
 Au travers de ce projet, nous voulons nous intéresser au fonctionnement d'un groupe d'agents au sein d'un environnement.
 
-Ces agents spécialisés dans la négociation évoluent dans un système d'enchères et de stratégies.
+Ces agents spécialisésdans la négociation évoluent dans un système d'enchères et de stratégies, afin de rechercher des accords autour d'interêts individuels et en temps limité.  
+
+Dans ce projet, le modèle de négociation est decentralisé et a la fois bilateral (negociation Negotiator - Supplier / Negotiator - Buyer) et multilateral (Negotiator recherchants leurs meilleurs deals).  
+
+Les Tickets vendus et échangés dans ce projet ont une valeur initiale privée qui dépend des préférences du Supplier puis cette valeur devient corrélée, dépendant en partie des Negotiator. 
+
+Concernant les negociations bilateralles, nous utilisons un modèle de Rubinstein avec offres alternatives, les offres varient lineairement jusqu'à obtention d'un accord de la part des 2 négociateurs ou du refus de l'une des 2 parties.  
+
+Notre projet veut suivre les hypothèses du Contract Net : chaque agent peut communiquer avec tous les autres, voies de communication fiables, les messages sont transmis et arrivent à leurs destinations, système multi-agent ouvert, tâches identifiées dynamiquement, les agents sont honnêtes.  
+
 En effet, nous modélisons ici **trois types d'agents différents** : 
 - **Buyer** : cet agent cherche un ticket pour se rendre à une destination précise, il est muni d'un certain budget et attend de recevoir des offres pour sa destination souhaitée.
 - **Supplier** : cet agent possède un ticket vers une certaine destination, il souhaite en recevoir un certain prix et suit une certaine stratégie pour négocier du prix de vente, cet agent attend de recevoir une offre pour procéder à une négociation.
@@ -32,6 +41,14 @@ Plus d'informations concernant le fonctionnement précis des stratégies sont à
 
 Les Negotiator peuvent aussi réaliser des coalitions afin de profiter de prix plus intéressants auprès des Supplier. Pour cela, il prennent compte l'état du marché et réalisent chacun indépendemment la décision de rejoindre la coalition ou non.  
 La décision reste un minimum stochastique afin de proposer une certaine diversité dans les choix.
+
+## Fonctionnement du systeme par vidéo
+
+Vous pouvez trouver ci-dessous les liens des videos présentant l'algorithme en fonctionnement avec différents cardinaux d'agents (de plus en plus d'agents).  
+
+[[YOUTUBE - 17 Agents]](https://www.youtube.com/watch?v=bQe7fXa44Pk)  (youtube.com/watch?v=bQe7fXa44Pk)  
+[[YOUTUBE - 115 Agents]](https://www.youtube.com/watch?v=LCPS13_NhQw)  (youtube.com/watch?v=LCPS13_NhQw)  
+[[YOUTUBE - 700 Agents]](https://www.youtube.com/watch?v=foO4hzvbIgA)  (youtube.com/watch?v=foO4hzvbIgA)
 
 ## Utilité des Classes
 
@@ -151,4 +168,8 @@ Notes :
 ### Coalition
 
 Les Negotiator peuvent réaliser un état des lieux de la situation de l'environnement afin de calculer une probabilité de succès de leur mission.  
-Plus la probabilité de succès est basse, plus les Negotiator auront tendance à vouloir former une coalition, si c'est le cas, alors ils bénéficieront d'une baisse de 10% sur le prix minimal que le Supplier souhaite recevoir lors d'une négociation.  
+Plus la probabilité de succès est basse, plus les Negotiator auront tendance à vouloir former une coalition, si c'est le cas, alors ils bénéficieront d'une baisse sur le prix minimal que le Supplier souhaite recevoir lors d'une négociation.  
+Cette baisse de prix est avantageuse et proportionnelle au pourcentage de Negotiator rejoignant la coalition.  
+Ainsi, l'efficacité de la coalition augmente avec son importance dans l'environnement.  
+Nous évaluons la valeur d'utilité de chaque agent par la vitesse de vente du Ticket, le succès de vente et le prix de vente.  
+La répartition de paiement est égale pour tous les Negotiator qui bénéficient tous d'une réduction proportionnelle à l'engagement général.  
